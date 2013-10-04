@@ -13,6 +13,7 @@ group :test do
   gem 'rspec', '>= 2.14'
   gem 'sqlite3'
   gem 'database_cleaner'
+  gem 'fivemat'
 end
 
 gemspec
