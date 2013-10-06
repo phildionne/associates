@@ -13,19 +13,17 @@ Dir[File.expand_path('../../spec/support/macros/*.rb', __FILE__)].map(&method(:r
 RSpec.configure do |config|
 
   config.include DatabaseMacros
+  config.include ModelMacros
 
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
 
-  config.before(:suite) do
-    Database.setup
-
-  end
-
   config.before(:each) do
+    Database.setup
   end
 
   config.after(:each) do
+    Database.clean
   end
 end

@@ -5,13 +5,16 @@ module Database
   end
 
   def self.setup
-    destroy
     create
-
-    ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: database_file)
 
     # Hide migration logs
     ActiveRecord::Migration.verbose = false
+
+    ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: database_file)
+  end
+
+  def self.clean
+    destroy
   end
 
 
