@@ -4,7 +4,6 @@ Coveralls.wear!
 require 'bundler/setup'
 require 'rspec'
 require 'sqlite3'
-require 'database_cleaner'
 
 require 'associates'
 
@@ -22,14 +21,11 @@ RSpec.configure do |config|
   config.before(:suite) do
     Database.setup
 
-    DatabaseCleaner.strategy = :transaction
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
   end
 
   config.after(:each) do
-    DatabaseCleaner.clean
   end
 end
