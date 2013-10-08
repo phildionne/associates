@@ -24,7 +24,6 @@ module Associates
     # Defines an associated model
     #
     # @example
-    #
     #   class User
     #     include Associates
     #
@@ -32,11 +31,22 @@ module Associates
     #   end
     #
     # @param model [Symbol, Class]
-    # @param options [Hash]
-    # @options [Symbol] :to
-    # @options [Symbol] :depends_on
-    # @options [String, Class] :class_name
-    # @options [Boolean] :delegate
+    # @param [Hash] options
+    # @option options [Symbol, Array] :only Only generate methods for the given attributes
+    #
+    # @option options [Symbol, Array] :except Generate all the model's methods except
+    #   for the given attributes
+    #
+    # @option options [Symbol] :depends_on Specify one or more associate name on
+    #   which the current associate model depends to be valid. This is primarily
+    #   a feature to automatically setup `belongs_to` associations between ActiveRecord
+    #   models.
+    #
+    # @option options [String, Class] :class_name Specify the class name of the associate.
+    #   Use it only if that name can’t be inferred from the associate's name
+    #
+    # @option options [Boolean] :delegate (true) Wether or not to delegate the associate's
+    #   attributes getter and setters methods to the associate instance
     def associate(model, options = {})
       options = {
         delegate: true
@@ -53,7 +63,7 @@ module Associates
 
     private
 
-    # Instantiate an associate
+    # Builds an associate
     #
     # @param model [Symbol, Class]
     # @param options [Hash]
@@ -132,6 +142,10 @@ module Associates
       end
     end
 
+    # Allow to accept single or multiple elements as arguments. Ensures a collection
+    # is always returned when there is one or more elements.
+    #
+    # @return [Nil, Array]
     def extract_attributes(object)
       return nil if object.blank?
       [object] unless object.is_a?(Enumerable)
