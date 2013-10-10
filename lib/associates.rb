@@ -148,7 +148,7 @@ module Associates
     # @return [Nil, Array]
     def extract_attributes(object)
       return nil if object.blank?
-      [object] unless object.is_a?(Enumerable)
+      object.is_a?(Enumerable) ? object : [object]
     end
   end
 end
