@@ -12,6 +12,61 @@ describe Associates do
 
       context "with valid arguments" do
 
+        describe "with options" do
+
+          describe :only do
+            before do
+              GuestOrder.reset_associate!(:user)
+              GuestOrder.associate(:user, only: :username)
+            end
+
+            it "defines setters and getters only for the specified attribute" do
+              expect(guest_order).to respond_to(:username)
+              expect(guest_order).to respond_to(:username=)
+              expect(guest_order).not_to respond_to(:password)
+              expect(guest_order).not_to respond_to(:password=)
+            end
+          end
+
+          describe :except do
+            before do
+              GuestOrder.reset_associate!(:user)
+              GuestOrder.associate(:user, except: :username)
+            end
+
+            it "defines setters and getters for all attributes except for the specified attribute" do
+              expect(guest_order).not_to respond_to(:username)
+              expect(guest_order).not_to respond_to(:username=)
+              expect(guest_order).to respond_to(:password)
+              expect(guest_order).to respond_to(:password=)
+            end
+          end
+
+          describe :class_name do
+
+            describe "when specified" do
+              before do
+                AdminUser = Class.new(User)
+
+                GuestOrder.reset_associate!(:user)
+                GuestOrder.associate(:user, class_name: AdminUser)
+              end
+
+              it "uses the given class" do
+                expect(guest_order.user).to be_an_instance_of(AdminUser)
+              end
+            end
+
+            describe "when unspecified" do
+
+              it "infers the class from the associate name" do
+                expect(guest_order.user).to be_an_instance_of(User)
+              end
+            end
+          end
+
+        end
+
         describe "undefined model name", :skip do
           # @TODO Think wether it is a feature or not
           # Could be metadefined later
