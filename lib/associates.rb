@@ -74,10 +74,17 @@ module Associates
       dependent_models_names = extract_attributes(options[:depends_on]) || []
       dependent_models_names = dependent_models_names.map(&:to_s)
 
-      if attributes = options[:only] || attributes =  options[:except]
-        attribute_names = extract_attributes(attributes)
+      if options[:only]
+        attribute_names = extract_attributes(options[:only])
       else
-        attribute_names = model_klass.attribute_names.reject { |attr| attr =~ /id|updated_at|created_at|deleted_at/ }
+        excluded = ['id', 'updated_at', 'created_at', 'deleted_at']
+
+        if options[:except]
+          excluded << extract_attributes(options[:except]).map(&:to_s)
+          excluded.flatten!
+        end
+
+        attribute_names = model_klass.attribute_names.reject { |name| excluded.include?(name) }
       end
 
       # Ensure associate name don't clash with already declared ones
