@@ -65,6 +65,46 @@ describe Associates do
             end
           end
 
+          describe :delegate do
+
+            describe "enabled" do
+              before do
+                GuestOrder.reset_associate!(:user)
+                GuestOrder.associate(:user, delegate: true)
+              end
+
+              it "defines attributes setters for the specified model" do
+                expect(guest_order).to respond_to(:username=)
+                expect(guest_order).to respond_to(:password=)
+                expect(guest_order).to respond_to(:product=)
+                expect(guest_order).to respond_to(:amount=)
+              end
+
+              it "defines attributes getters for the specified model" do
+                expect(guest_order).to respond_to(:username)
+                expect(guest_order).to respond_to(:password)
+                expect(guest_order).to respond_to(:product)
+                expect(guest_order).to respond_to(:amount)
+              end
+            end
+
+            describe "disabled" do
+              before do
+                GuestOrder.reset_associate!(:user)
+                GuestOrder.associate(:user, delegate: false)
+              end
+
+              it "doesn't define attributes setters for the specified model" do
+                expect(guest_order).not_to respond_to(:username=)
+                expect(guest_order).not_to respond_to(:password=)
+              end
+
+              it "doesn't define attributes getters for the specified model" do
+                expect(guest_order).not_to respond_to(:username)
+                expect(guest_order).not_to respond_to(:password)
+              end
+            end
+          end
         end
 
         describe "undefined model name", :skip do
@@ -111,45 +151,12 @@ describe Associates do
       expect(guest_order).to respond_to(:payment)
     end
 
-    context "with delegation" do
+    describe :delegation do
       before do
         GuestOrder.reset_associate!(:user)
         GuestOrder.associate(:user, delegate: true)
       end
 
-      it "defines attributes setters for the specified model" do
-        expect(guest_order).to respond_to(:username=)
-        expect(guest_order).to respond_to(:password=)
-        expect(guest_order).to respond_to(:product=)
-        expect(guest_order).to respond_to(:amount=)
-      end
-
-      it "defines attributes getters for the specified model" do
-        expect(guest_order).to respond_to(:username)
-        expect(guest_order).to respond_to(:password)
-        expect(guest_order).to respond_to(:product)
-        expect(guest_order).to respond_to(:amount)
-      end
-    end
-
-    context "without delegation" do
-      before do
-        GuestOrder.reset_associate!(:user)
-        GuestOrder.associate(:user, delegate: false)
-      end
-
-      it "doesn't define attributes setters for the specified model" do
-        expect(guest_order).not_to respond_to(:username=)
-        expect(guest_order).not_to respond_to(:password=)
-      end
-
-      it "doesn't define attributes getters for the specified model" do
-        expect(guest_order).not_to respond_to(:username)
-        expect(guest_order).not_to respond_to(:password)
-      end
-    end
-
-    describe :delegation do
       it "delegates attributes setters to the specified model" do
         expect(guest_order.user).to receive(:username=).with('pdionne')
         guest_order.username = 'pdionne'
