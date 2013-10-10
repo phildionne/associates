@@ -22,7 +22,7 @@ describe Associates::Validations do
           expect(guest_order.errors[:amount]).to   be_empty
         end
 
-        context "with untracked associated model attributes" do
+        context "with an unspecified associated model attribute" do
 
           it "doesn't populates the errors hash base" do
             run_migration { add_column(:orders, :merchant, :string) }
@@ -51,7 +51,7 @@ describe Associates::Validations do
           expect(guest_order.errors[:amount]).to       be_empty
         end
 
-        context "with untracked associated model attributes" do
+        context "with an unspecified associated model attribute" do
 
           it "populates the errors hash base" do
             run_migration { add_column(:orders, :merchant, :string) }
