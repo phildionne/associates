@@ -35,6 +35,13 @@ describe Associates::Validations do
             expect(guest_order.errors[:base]).to be_empty
           end
         end
+
+        it "doesn't populates the errors hash with model association presence validation errors" do
+          guest_order.valid?
+
+          expect(guest_order.errors).not_to have_key(:user)
+          expect(guest_order.errors).not_to have_key(:order)
+        end
       end
 
       context "with an invalid associate" do

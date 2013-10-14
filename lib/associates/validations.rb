@@ -23,7 +23,10 @@ module Associates
         model.valid?(context)
 
         model.errors.each_entry do |attribute, message|
-          if respond_to?(attribute)
+          # Do not include association presence validation errors
+          if associate.dependent_names.include?(attribute.to_s)
+            next
+          elsif respond_to?(attribute)
             errors.add(attribute, message)
           else
             errors.add(:base, model.errors.full_messages_for(attribute))
