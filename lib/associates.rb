@@ -132,7 +132,14 @@ module Associates
           raise ArgumentError, "#{associate.klass}(##{associate.klass.object_id}) expected, got #{object.class}(##{object.class.object_id})"
         end
 
-        instance_variable_set("@#{associate.name}", object)
+        instance = instance_variable_set("@#{associate.name}", object)
+
+        depending = associates.select { |_associate| _associate.dependent_names.include?(associate.name) }
+        depending.each do |_associate|
+          send(_associate.name).send("#{associate.name}=", instance)
+        end
+
+        instance
       end
     end
 
@@ -145,7 +152,15 @@ module Associates
     # @param associate [Item]
     def define_associate_instance_getter_method(associate)
       define_method associate.name do
-        instance_variable_get("@#{associate.name}") || instance_variable_set("@#{associate.name}", associate.klass.new)
+        instance = instance_variable_get("@#{associate.name}") || instance_variable_set("@#{associate.name}", associate.klass.new)
+
+        depending = associates.select { |_associate| _associate.dependent_names.include?(associate.name) }
+        depending.each do |_associate|
+          existing = send(_associate.name).send(associate.name)
+          send(_associate.name).send("#{associate.name}=", instance) unless existing
+        end
+
+        instance
       end
     end
 

@@ -28,8 +28,9 @@ describe Associates::Persistence do
         context "with the depend_on option specified" do
 
           it "sets the dependent model on the associate" do
-            expect(guest_order.payment.order).to be_nil
             guest_order.save
+
+            expect(guest_order.order.user).to eq(guest_order.user)
             expect(guest_order.payment.order).to eq(guest_order.order)
           end
         end

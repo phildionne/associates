@@ -19,13 +19,6 @@ module Associates
       ActiveRecord::Base.transaction do
         begin
           associates.all? do |associate|
-
-            # Assign associate dependent(s) attribute
-            associate.dependent_names.each do |dependent_name|
-              depending_value = send(dependent_name)
-              send(associate.name).send("#{dependent_name}=", depending_value)
-            end
-
             send(associate.name).send(:save!, *args)
           end
         rescue ActiveRecord::RecordInvalid

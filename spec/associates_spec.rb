@@ -151,6 +151,31 @@ describe Associates do
       expect(guest_order).to respond_to(:payment)
     end
 
+    describe :instance_setter do
+
+      it "sets its dependent associate relation" do
+        user = guest_order.user
+        expect(guest_order.order.user).to be(user)
+      end
+    end
+
+    describe :instance_getter do
+
+      it "sets its dependent associate relation" do
+        user = User.new
+        guest_order.user = user
+
+        expect(guest_order.order.user).to be(user)
+      end
+
+      it "doesn't sets its dependent associate relation when existing" do
+        guest_order.order.user = User.new
+        user = guest_order.user
+
+        expect(guest_order.order.user).not_to be(user)
+      end
+    end
+
     describe :delegation do
       before do
         GuestOrder.reset_associate!(:user)
