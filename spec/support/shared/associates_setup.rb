@@ -1,4 +1,4 @@
-shared_context "associates_setup" do
+shared_context 'associates_setup' do
 
   before do
     run_migration do
@@ -9,7 +9,6 @@ shared_context "associates_setup" do
 
       create_table(:orders, force: true) do |t|
         t.references :user
-        t.string :product
       end
 
       create_table(:payments, force: true) do |t|
@@ -23,12 +22,15 @@ shared_context "associates_setup" do
     end
 
     spawn_class('Order', ActiveRecord::Base) do
+      attr_accessor :product
+
       belongs_to :user
-      validates :product, presence: true
+      validates :user, :product, presence: true
     end
 
     spawn_class('Payment', ActiveRecord::Base) do
       belongs_to :order
+      validates :order, presence: true
     end
 
     spawn_class('GuestOrder', Object) do
@@ -36,7 +38,7 @@ shared_context "associates_setup" do
       include Associates
 
       associate :user
-      associate :order, only: :product
+      associate :order, only: :product, depends_on: :user
       associate :payment, depends_on: :order
     end
 
