@@ -5,6 +5,8 @@ Gemfile.lock
 # Ignore test database
 spec/support/test.db
 
+.ruby-version
+
 # And because this is Ruby, ignore the following
 #  (source: https://github.com/github/gitignore/blob/master/Ruby.gitignore):
 
