@@ -7,10 +7,8 @@ require 'sqlite3'
 
 require 'associates'
 
-Dir[File.expand_path('../../spec/support/*.rb', __FILE__)].map(&method(:require))
-Dir[File.expand_path('../../spec/support/macros/*.rb', __FILE__)].map(&method(:require))
-Dir[File.expand_path('../../spec/support/shared/*.rb', __FILE__)].map(&method(:require))
-require File.expand_path('../../spec/factories.rb', __FILE__)
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].map(&method(:require))
+Dir["#{File.dirname(__FILE__)}/factories.rb"].map(&method(:require))
 
 RSpec.configure do |config|
 
