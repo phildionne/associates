@@ -4,7 +4,6 @@
 
 ```ruby
 # app/forms/guest_order
-
 class GuestOrder
   include Associates
 
@@ -39,13 +38,11 @@ end
 
 ```ruby
 # config/routes
-
 resource :guest_order, only: [:new, :create]
 ```
 
 ```ruby
 # app/controllers/guest_order_controller
-
 class GuestOrdersController < ApplicationController
 
   def new
@@ -75,7 +72,6 @@ end
 
 ```erb
 # views/guest_orders/_form.html.erb
-
 <%= form_for @guest_order do |f| %>
   <%= f.text_field :username %>
   <%= f.text_field :password %>
@@ -89,12 +85,21 @@ end
 
 ## Validations
 
-For the object to be valid, every associated models must be valid too. Associated models errors are traversed and added to the form object's error hash. When an attribute is invalid and isn't defined on the object, the corresponding error is added to the `:base` key.
-
-For example:
+For the object to be valid, every associated models must be valid too. Associated models errors are traversed and added to the form object's error hash.
 
 ```ruby
-o = GuestOrder.new(username: 'pdionne', password: '12345', product: 'surfboard')
+o = GuestOrder.new(username: nil, password: '12345', product: 'surfboard', amount: 20)
+o.valid?
+# => false
+
+o.errors.messages
+# => { username: [ "can't be blank" ] }
+```
+
+When an attribute is invalid and isn't defined on the object including Associates, the corresponding error is added to the `:base` key.
+
+```ruby
+o = GuestOrder.new(username: 'phildionne', password: '12345', product: 'surfboard')
 o.valid?
 # => false
 
@@ -104,23 +109,46 @@ o.errors[:base]
 
 ## Persitence
 
-By default associated models are persisted inside a database transaction. Read more on [ActiveRecord transactions](http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html). You can also override the `#save` method and implement a different persistence logic.
-
-## Associations
-
-`ActiveRecord` associations between associated models can be handled using the `depends_on` option:
+Calling `#save` will persist every associated model. By default associated models are persisted inside a database transaction, if any associated model can't be persisted, none will be. Read more on [ActiveRecord transactions](http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html). You can also override the `#save` method and implement a different persistence logic.
 
 ```ruby
 class GuestOrder
+  include Associates
+
+  # ...
+
+  def save
+    # persist the associated user, order and payment models
+  end
+end
+```
+
+## Associations
+
+`belongs_to` associations between associated models can be handled using the `depends_on` option:
+
+```ruby
+class GuestOrder
+  include Associates
+
   associate :user
   associate :order, depends_on: :user
 end
+
+o = GuestOrder.new
+o.user = User.find(1)
+o.save
+
+o.order.user
+# => #<User id: 1 ... >
 ```
 
 or by declaring an attribute which will define a method with the same signature than the foreign key setter:
 
 ```ruby
 class GuestOrder
+  include Associates
+
   associate :order, only: :user_id
 end
 ```
@@ -128,10 +156,12 @@ end
 
 ## Delegation
 
-By default delegation is enabled and will define the following methods:
+Associates works by delegating the right method calls to the right models. By default, delegation is enabled and will define the following methods:
 
 ```ruby
 class GuestOrder
+  include Associates
+
   associate :user
 end
 ```
@@ -147,12 +177,39 @@ You might want to disable delegation to avoid attributes name clash between asso
 
 ```ruby
 class GuestOrder
-  associate :user, delegate: false
+  include Associates
+
+  associate :user
+  associate :referring_user, class_name: User, delegate: false
 end
 ```
 
 - `#user`
 - `#user=`
+- `#username`
+- `#username=`
+- `#password`
+- `#password=`
+- `#referring_user`
+- `#referring_user=`
+
+or granularly select each attribute:
+
+```ruby
+class GuestOrder
+  include Associates
+
+  associate :user, only: [:username]
+  associate :order, except: [:product]
+end
+```
+
+- `#user`
+- `#user=`
+- `#username`
+- `#username=`
+- `#order`
+- `#order=`
 
 # Contributing
 
@@ -168,7 +225,9 @@ end
 
 # Inspiration
 
-Inspired by [rafBM's](https://github.com/rafBM) [presentation](https://github.com/rafBM/opencode12-rails) at [OpenCode XII](http://opencode.ca/), [Thoughtbot's](http://thoughtbot.com) [Harlow Ward](https://github.com/harlow) [ActiveModel Form Objects](http://robots.thoughtbot.com/post/33296680513/activemodel-form-objects) post and [Ryan Bates](https://github.com/ryanb) [Form objects](http://railscasts.com/episodes/416-form-objects)' railscast.
+- [rafBM's](https://github.com/rafBM) [presentation](https://github.com/rafBM/opencode12-rails) at [OpenCode XII](http://opencode.ca/)
+- [Thoughtbot's](http://thoughtbot.com) [Harlow Ward](https://github.com/harlow) [ActiveModel Form Objects](http://robots.thoughtbot.com/post/33296680513/activemodel-form-objects) post
+- [Ryan Bates](https://github.com/ryanb) [Form objects](http://railscasts.com/episodes/416-form-objects)' railscast
 
 # Author
 
