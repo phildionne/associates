@@ -70,7 +70,7 @@ module Associates
     # @return [Item]
     def build_associate(model, options = {})
       model_name             = model.to_s.underscore
-      model_klass            = options[:class_name] || model.to_s.classify.constantize
+      model_klass            = (options[:class_name] || model).to_s.classify.constantize
       dependent_models_names = extract_attributes(options[:depends_on]) || []
       dependent_models_names = dependent_models_names.map(&:to_s)
 
