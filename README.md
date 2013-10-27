@@ -38,11 +38,11 @@ end
 
 ```ruby
 # config/routes
-resource :guest_order, only: [:new, :create]
+resource :guest_orders, only: [:new, :create]
 ```
 
 ```ruby
-# app/controllers/guest_order_controller
+# app/controllers/guest_orders_controller
 class GuestOrdersController < ApplicationController
 
   def new
@@ -107,7 +107,7 @@ o.errors[:base]
 # => "Amount can't be blank"
 ```
 
-## Persitence
+## Persistence
 
 Calling `#save` will persist every associated model. By default associated models are persisted inside a database transaction, if any associated model can't be persisted, none will be. Read more on [ActiveRecord transactions](http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html). You can also override the `#save` method and implement a different persistence logic.
 
