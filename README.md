@@ -112,15 +112,11 @@ o.errors[:base]
 Calling `#save` will persist every associated model. By default associated models are persisted inside a database transaction, if any associated model can't be persisted, none will be. Read more on [ActiveRecord transactions](http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html). You can also override the `#save` method and implement a different persistence logic.
 
 ```ruby
-class GuestOrder
-  include Associates
+o = GuestOrder.new(username: 'phildionne', password: '12345', product: 'surfboard', amount: 20)
+o.save
 
-  # ...
-
-  def save
-    # persist the associated user, order and payment models
-  end
-end
+[o.user, o.order, o.payment].all?(&:persisted?)
+# => true
 ```
 
 ## Associations
