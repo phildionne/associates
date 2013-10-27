@@ -5,6 +5,7 @@ Associate multiple models together and make them behave as one. Quacks like a si
 Currently only compatible with ActiveRecord, support other ORMs is on the list.
 
 [![Gem Version](https://badge.fury.io/rb/associates.png)](http://badge.fury.io/rb/associates)
+[![Code Climate](https://codeclimate.com/github/phildionne/associates.png)](https://codeclimate.com/github/phildionne/associates)
 
 # Usage
 
