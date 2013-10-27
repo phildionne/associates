@@ -39,9 +39,8 @@ module Associates
     #   for the given attributes
     #
     # @option options [Symbol] :depends_on Specify one or more associate name on
-    #   which the current associate model depends to be valid. This is primarily
-    #   a feature to automatically setup `belongs_to` associations between ActiveRecord
-    #   models.
+    #   which the current associate model depends to be valid. Allow to automatically
+    #   setup `belongs_to` associations between models
     #
     # @option options [String, Class] :class_name Specify the class name of the associate.
     #   Use it only if that name can’t be inferred from the associate's name
@@ -123,7 +122,7 @@ module Associates
     #
     # @example
     #
-    #   @form_object.user = User.new
+    #   @association.user = User.new
     #
     # @param associate [Item]
     def define_associate_instance_setter_method(associate)
@@ -147,7 +146,7 @@ module Associates
     #
     # @example
     #
-    #   @form_object.user
+    #   @association.user
     #
     # @param associate [Item]
     def define_associate_instance_getter_method(associate)
