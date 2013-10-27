@@ -45,21 +45,19 @@ describe Associates do
           describe :class_name do
 
             describe "when specified" do
-              before do
-                AdminUser = Class.new(User) unless defined?(AdminUser)
-                GuestOrder.reset_associate!(:user)
-              end
+              before { GuestOrder.reset_associate!(:user) }
 
               it "uses the given class" do
+                AdminUser = Class.new(User)
                 GuestOrder.associate(:user, class_name: AdminUser)
 
                 expect(guest_order.user).to be_an_instance_of(AdminUser)
               end
 
               it "accepts a String" do
-                GuestOrder.associate(:user, class_name: 'AdminUser')
+                GuestOrder.associate(:user, class_name: 'User')
 
-                expect(guest_order.user).to be_an_instance_of(AdminUser)
+                expect(guest_order.user).to be_an_instance_of(User)
               end
             end
 
