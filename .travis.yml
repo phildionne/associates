@@ -1,0 +1,14 @@
+bundler_args: --without development
+language: ruby
+
+before_install:
+  - rvm get head
+
+rvm:
+  - 2.1.0
+  - 2.0.0
+  - 1.9.3
+
+matrix:
+  allow_failures:
+    - rvm: 2.1.0
