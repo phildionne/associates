@@ -1,5 +1,9 @@
 # Associates
 
+Associate multiple models together and make them behave as one. Quacks like a single Model for the Views (validations, errors, form endpoints) and for the Controller (restful actions). Also a great alternative to `#accepts_nested_attributes_for`.
+
+Currently only compatible with ActiveRecord, support other ORMs is on the list.
+
 # Usage
 
 ```ruby
