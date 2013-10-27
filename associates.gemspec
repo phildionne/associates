@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.email         = ["dionne.phil@gmail.com"]
   s.homepage      = "https://github.com/phildionne/associates"
   s.licenses      = ['MIT']
-  s.summary       = "TODO: summary"
-  s.description   = "TODO: description"
+  s.summary       = "Associate multiple models together and make them behave as one."
+  s.description   = "Associate multiple models together and make them behave as one."
 
   s.cert_chain  = ['certs/pdionne-gem-public_cert.pem']
   s.signing_key = File.expand_path("~/.gem/pdionne-gem-private_key.pem") if $0 =~ /gem\z/
