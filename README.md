@@ -211,6 +211,9 @@ end
 
 I'm not a fan of Rails current solution for handling multi-model forms using `#accepts_nested_attributes_for`. I feel like it breaks the Single Responsibility Principle by handling the logic on one of the models. Add just a bit of custom behavior and it usually leads to spaghetti logic in the Controller and the tests. Using Associates to refactor nested forms logic into a multi-model object is a great fit.
 
+# TODO
+- [ ] Support other ORMs
+
 # Contributing
 
 1. Fork it
