@@ -16,6 +16,7 @@ module Associates
     self.associates = Array.new
   end
 
+  BLACKLISTED_ATTRIBUTES = ['id', 'updated_at', 'created_at', 'deleted_at']
 
   Item = Struct.new(:name, :klass, :attribute_names, :dependent_names, :options)
 
@@ -77,11 +78,10 @@ module Associates
       if options[:only]
         attribute_names = extract_attributes(options[:only])
       else
-        excluded = ['id', 'updated_at', 'created_at', 'deleted_at']
+        excluded = BLACKLISTED_ATTRIBUTES.to_a
 
         if options[:except]
-          excluded << extract_attributes(options[:except]).map(&:to_s)
-          excluded.flatten!
+          excluded += extract_attributes(options[:except]).map(&:to_s)
         end
 
         attribute_names = model_klass.attribute_names.reject { |name| excluded.include?(name) }
