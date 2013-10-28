@@ -69,13 +69,58 @@ module Associates
     # @param options [Hash]
     # @return [Item]
     def build_associate(model, options = {})
-      model_name             = model.to_s.underscore
-      model_klass            = (options[:class_name] || model).to_s.classify.constantize
-      dependent_models_names = extract_attributes(options[:depends_on]) || []
-      dependent_models_names = dependent_models_names.map(&:to_s)
+      model_name                = model.to_s.underscore
+      model_klass               = (options[:class_name] || model).to_s.classify.constantize
+      dependent_associate_names = (extract_attributes(options[:depends_on]) || []).map(&:to_s)
+      attribute_names           = extract_attribute_names(model_klass, options)
 
+      ensure_name_uniqueness(associates.map(&:name), model_name)
+      ensure_attribute_uniqueness(associates.map(&:attribute_names), attribute_names) if options[:delegate]
+      ensure_dependent_names_existence(associates.map(&:name), dependent_associate_names)
+
+      Item.new(model_name, model_klass, attribute_names, dependent_associate_names, options)
+    end
+
+    # Ensure associate name don't clash with already declared ones
+    #
+    # @param associates_names [Array]
+    # @param name [String]
+    def ensure_name_uniqueness(associates_names, name)
+      if associates_names.include?(name)
+        raise NameError, "already defined associate name '#{model_name}' for #{name}(#{object_id})"
+      end
+    end
+
+    # Ensure associate attribute names don't clash with already declared ones
+    #
+    # @param associates_attribute_names [Array]
+    # @param attribute_names [Array]
+    def ensure_attribute_uniqueness(associates_attribute_names, attribute_names)
+      attribute_names.each do |attribute_name|
+        if associates_attribute_names.include?(attribute_name)
+          raise NameError, "already defined attribute name '#{attribute_name}' for #{name}(#{object_id})"
+        end
+      end
+    end
+
+    # Ensure associate dependent names exists
+    #
+    # @param associates_names [Array]
+    # @param dependent_associate_names [Array]
+    def ensure_dependent_names_existence(associates_names, dependent_associate_names)
+      dependent_associate_names.each do |dependent_name|
+        unless associates_names.include?(dependent_name)
+          raise NameError, "undefined associated model '#{dependent_name}' for #{name}(#{object_id})"
+        end
+      end
+    end
+
+    # @param model_klass [Class]
+    # @param options [Hash]
+    # @return [Array]
+    def extract_attribute_names(model_klass, options)
       if options[:only]
-        attribute_names = extract_attributes(options[:only])
+        extract_attributes(options[:only])
       else
         excluded = BLACKLISTED_ATTRIBUTES.to_a
 
@@ -83,31 +128,8 @@ module Associates
           excluded += extract_attributes(options[:except]).map(&:to_s)
         end
 
-        attribute_names = model_klass.attribute_names.reject { |name| excluded.include?(name) }
+        model_klass.attribute_names.reject { |name| excluded.include?(name) }
       end
-
-      # Ensure associate name don't clash with already declared ones
-      if associates.map(&:name).include?(model_name)
-        raise NameError, "already defined associate name '#{model_name}' for #{name}(#{object_id})"
-      end
-
-      # Ensure associate attribute names don't clash with already declared ones
-      if options[:delegate]
-        attribute_names.each do |attribute_name|
-          if associates.map(&:attribute_names).include?(attribute_name)
-            raise NameError, "already defined attribute name '#{attribute_name}' for #{name}(#{object_id})"
-          end
-        end
-      end
-
-      # Ensure associate dependent names exists
-      dependent_models_names.each do |dependent_name|
-        unless associates.map(&:name).include?(dependent_name)
-          raise NameError, "undefined associated model '#{dependent_name}' for #{name}(#{object_id})"
-        end
-      end
-
-      Item.new(model_name, model_klass, attribute_names, dependent_models_names, options)
     end
 
     # Define associated model attribute methods delegation
