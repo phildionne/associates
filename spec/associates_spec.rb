@@ -155,6 +155,16 @@ describe Associates do
       expect(guest_order).to respond_to(:payment)
     end
 
+    describe :new do
+      let(:guest_order) { GuestOrder.new(username: 'phildionne', password: '123456789', product: 'surfboard') }
+
+      it "works with ActiveModel::Model #new" do
+        expect(guest_order.username).to eq('phildionne')
+        expect(guest_order.password).to eq('123456789')
+        expect(guest_order.product).to  eq('surfboard')
+      end
+    end
+
     describe :instance_setter do
 
       it "sets its dependent associate relation" do
