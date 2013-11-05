@@ -69,5 +69,19 @@ describe Associates::Persistence do
         it { expect { guest_order.save! }.to raise_error }
       end
     end
+
+    describe :persited? do
+      context "with a persisted associate" do
+        let(:guest_order) { Factory.create(:guest_order) }
+
+        it { expect(guest_order).to be_persisted }
+      end
+
+      context "with a unpersisted associate" do
+        let(:guest_order) { Factory.build(:guest_order) }
+
+        it { expect(guest_order).not_to be_persisted }
+      end
+    end
   end
 end

@@ -27,6 +27,13 @@ module Associates
       end
     end
 
+    # @return [Boolean] Wether or not all models are persited
+    def persisted?
+      associates.all? do |associate|
+        send(associate.name).send(:persisted?)
+      end
+    end
+
     # @return [True, ActiveRecord::RecordInvalid]
     def save!
       save || raise(ActiveRecord::RecordInvalid)
