@@ -13,7 +13,9 @@ class Factory
   end
 
   def self.create(name, attributes = {})
-    new(name, attributes).record.save!
+    record = new(name, attributes).record
+    record.save!
+    record
   end
 
   def self.attributes_for(name, attributes = {})
