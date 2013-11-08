@@ -10,8 +10,8 @@ rvm:
   - 1.9.3
 
 gemfiles:
-  - gemfiles/3.2.gemfile
-  - gemfiles/4.0.gemfile
+  - gemfiles/Gemfile.activerecord-3.2.x
+  - gemfiles/Gemfile.activerecord-4.0
 
 matrix:
   allow_failures:
