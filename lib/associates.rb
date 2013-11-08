@@ -8,7 +8,14 @@ module Associates
   extend ActiveSupport::Concern
 
   included do
-    include ActiveModel::Model
+    if ActiveModel.version >= Gem::Version.new("4.0.0")
+      include ActiveModel::Model
+    else
+      extend ActiveModel::Naming
+      include ActiveModel::Validations
+      include ActiveModel::Conversions
+    end
+
     include Persistence
     include Validations
 
