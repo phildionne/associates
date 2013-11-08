@@ -1,8 +1,8 @@
 # Associates
 
-Associate multiple models together and make them behave as one. Quacks like a single Model for the Views (validations, errors, form endpoints) and for the Controller (restful actions). Also a great alternative to `#accepts_nested_attributes_for`.
+Associate multiple models together and make them behave as one. Quacks like a single Model for the Views (validations, errors, form endpoints) and for the Controller (restful actions). Also a [great alternative](#an-alternative-to-the-current-nested-forms-solution) to `#accepts_nested_attributes_for`.
 
-Currently only compatible with ActiveRecord, support for other ORMs is on the list.
+Currently only compatible with ActiveRecord, support for other ORMs is on the list. Also, you might want to check out [apotonick/reform](https://github.com/apotonick/reform) to handle more complex situations.
 
 [![Gem Version](https://badge.fury.io/rb/associates.png)](http://badge.fury.io/rb/associates)
 [![Code Climate](https://codeclimate.com/github/phildionne/associates.png)](https://codeclimate.com/github/phildionne/associates)
