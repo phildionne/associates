@@ -94,7 +94,7 @@ end
 
 ## Validations
 
-For the object to be valid, every associated models must be valid too. Associated models errors are traversed and added to the form object's error hash.
+For the object to be valid, every associated model must be valid too. Associated models' errors are traversed and added to the form object's error hash.
 
 ```ruby
 o = GuestOrder.new(username: nil, password: '12345', product: 'surfboard', amount: 20)
@@ -118,7 +118,7 @@ o.errors[:base]
 
 ## Persistence
 
-Calling `#save` will persist every associated model. By default associated models are persisted inside a database transaction, if any associated model can't be persisted, none will be. Read more on [ActiveRecord transactions](http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html). You can also override the `#save` method and implement a different persistence logic.
+Calling `#save` will persist every associated model. By default associated models are persisted inside a database transaction: if any associated model can't be persisted, none will be. Read more on [ActiveRecord transactions](http://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html). You can also override the `#save` method and implement a different persistence logic.
 
 ```ruby
 o = GuestOrder.new(username: 'phildionne', password: '12345', product: 'surfboard', amount: 20)
@@ -148,7 +148,7 @@ o.order.user
 # => #<User id: 1 ... >
 ```
 
-or by declaring an attribute which will define a method with the same signature than the foreign key setter:
+or by declaring an attribute which will define a method with the same signature as the foreign key setter:
 
 ```ruby
 class GuestOrder
@@ -178,7 +178,7 @@ end
 - `#password`
 - `#password=`
 
-You might want to disable delegation to avoid attributes name clash between associated models:
+You might want to disable delegation to avoid attribute name clashes between associated models:
 
 ```ruby
 class GuestOrder
@@ -218,7 +218,7 @@ end
 
 ## An alternative to the current nested forms solution
 
-I'm not a fan of Rails current solution for handling multi-model forms using `#accepts_nested_attributes_for`. I feel like it breaks the Single Responsibility Principle by handling the logic on one of the models. Add just a bit of custom behavior and it usually leads to spaghetti logic in the Controller and the tests. Using Associates to refactor nested forms logic into a multi-model object is a great fit.
+I'm not a fan of Rails' current solution for handling multi-model forms using `#accepts_nested_attributes_for`. I feel like it breaks the Single Responsibility Principle by handling the logic on one of the models. Add just a bit of custom behavior and it usually leads to spaghetti logic in the controller and the tests. Using Associates to refactor nested forms logic into a multi-model object is a great fit.
 
 # TODO
 - [ ] Add a "#{model}_attributes" method to return an array of attributes included by the form object
