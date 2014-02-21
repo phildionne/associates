@@ -7,6 +7,7 @@ Currently only compatible with ActiveRecord, support for other ORMs is on the li
 [![Gem Version](https://badge.fury.io/rb/associates.png)](http://badge.fury.io/rb/associates)
 [![Code Climate](https://codeclimate.com/github/phildionne/associates.png)](https://codeclimate.com/github/phildionne/associates)
 [![Coverage Status](https://coveralls.io/repos/phildionne/associates/badge.png)](https://coveralls.io/r/phildionne/associates)
+[![Dependency Status](https://gemnasium.com/phildionne/associates.png)](https://gemnasium.com/phildionne/associates)
 [![Build Status](https://travis-ci.org/phildionne/associates.png)](https://travis-ci.org/phildionne/associates)
 
 # Usage
