@@ -14,7 +14,16 @@ describe Associates do
         expect { |b| Associates.configure(&b) }.to yield_control
       end
     end
+
+    describe :blacklisted_attributes do
+      let(:attributes) { [:attribute] }
+
+      before { Associates.blacklisted_attributes = attributes }
+
+      it { expect(Associates.blacklisted_attributes).to eq(attributes) }
+    end
   end
+
   describe :ClassMethods do
 
     describe :associate do

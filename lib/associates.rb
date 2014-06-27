@@ -23,7 +23,10 @@ module Associates
     self.associates = Array.new
   end
 
-  BLACKLISTED_ATTRIBUTES = ['id', 'updated_at', 'created_at', 'deleted_at']
+  # Blacklisted attributes
+  mattr_accessor :blacklisted_attributes
+  @@blacklisted_attributes = ['id', 'updated_at', 'created_at', 'deleted_at']
+
   # Convenience method to allow configuration options to be set in a block
   def self.configure(&block)
     yield self
@@ -137,7 +140,7 @@ module Associates
       if options[:only].any?
         options[:only]
       else
-        excluded = BLACKLISTED_ATTRIBUTES.to_a
+        excluded = Associates.blacklisted_attributes.to_a
 
         if options[:except].any?
           excluded += options[:except].map(&:to_s)
