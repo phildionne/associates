@@ -11,18 +11,24 @@ describe Associates::Persistence do
       context "with a valid associate" do
         let(:guest_order) { Factory.build(:guest_order) }
 
-        it { expect(guest_order.save).to be_true }
+        it { expect(guest_order.save).to be_truthy }
 
         it "persists the associated user" do
-          expect { guest_order.save }.to change(User, :count).by(1)
+          count = User.count
+          guest_order.save
+          expect(User.count).to eq(count + 1)
         end
 
         it "persists the associated order" do
-          expect { guest_order.save }.to change(Order, :count).by(1)
+          count = Order.count
+          guest_order.save
+          expect(Order.count).to eq(count + 1)
         end
 
         it "persists the associated payment" do
-          expect { guest_order.save }.to change(Payment, :count).by(1)
+          count = Payment.count
+          guest_order.save
+          expect(Payment.count).to eq(count + 1)
         end
 
         context "with the depend_on option specified" do
@@ -39,18 +45,24 @@ describe Associates::Persistence do
       context "with an invalid associate" do
         let(:guest_order) { Factory.build(:invalid_guest_order) }
 
-        it { expect(guest_order.save).to be_false }
+        it { expect(guest_order.save).to be_falsey }
 
         it "doesn't persists the associated user" do
-          expect { guest_order.save }.not_to change(User, :count).by(1)
+          count = User.count
+          guest_order.save
+          expect(User.count).to eq(count)
         end
 
         it "doesn't persists the associated order" do
-          expect { guest_order.save }.not_to change(Order, :count).by(1)
+          count = Order.count
+          guest_order.save
+          expect(Order.count).to eq(count)
         end
 
         it "doesn't persists the associated payment" do
-          expect { guest_order.save }.not_to change(Payment, :count).by(1)
+          count = Payment.count
+          guest_order.save
+          expect(Payment.count).to eq(count)
         end
       end
     end
@@ -60,7 +72,7 @@ describe Associates::Persistence do
       context "with a valid associate" do
         let(:guest_order) { Factory.build(:guest_order) }
 
-        it { expect(guest_order.save!).to be_true }
+        it { expect(guest_order.save!).to be_truthy }
       end
 
       context "with an invalid associate" do

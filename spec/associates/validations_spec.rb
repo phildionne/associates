@@ -11,7 +11,7 @@ describe Associates::Validations do
       context "with a valid associate" do
         let(:guest_order) { Factory.build(:guest_order) }
 
-        it { expect(guest_order.valid?).to be_true }
+        it { expect(guest_order.valid?).to be_truthy }
 
         it "doesn't populates the errors hash" do
           guest_order.valid?
@@ -47,7 +47,7 @@ describe Associates::Validations do
       context "with an invalid associate" do
         let(:guest_order) { Factory.build(:invalid_guest_order, username: 'pdionne') }
 
-        it { expect(guest_order.valid?).to be_false }
+        it { expect(guest_order.valid?).to be_falsey }
 
         it "populates the errors hash" do
           guest_order.valid?
@@ -73,7 +73,7 @@ describe Associates::Validations do
         end
 
         it "doesn't duplicate error messages" do
-          pending
+          skip
         end
       end
     end
