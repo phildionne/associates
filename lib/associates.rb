@@ -55,6 +55,10 @@ module Associates
     # @option options [Boolean] :delegate (true) Wether or not to delegate the associate's
     #   attributes getter and setters methods to the associate instance
     def associate(model, options = {})
+      options[:only]       = Array(options[:only])
+      options[:except]     = Array(options[:except])
+      options[:depends_on] = Array(options[:depends_on])
+
       options = {
         delegate: true
       }.merge(options)
@@ -78,7 +82,7 @@ module Associates
     def build_associate(model, options = {})
       model_name                = model.to_s.underscore
       model_klass               = (options[:class_name] || model).to_s.classify.constantize
-      dependent_associate_names = (extract_attributes(options[:depends_on]) || []).map(&:to_s)
+      dependent_associate_names = options[:depends_on].map(&:to_s)
       attribute_names           = extract_attribute_names(model_klass, options)
 
       ensure_name_uniqueness(associates.map(&:name), model_name)
@@ -126,13 +130,13 @@ module Associates
     # @param options [Hash]
     # @return [Array]
     def extract_attribute_names(model_klass, options)
-      if options[:only]
-        extract_attributes(options[:only])
+      if options[:only].any?
+        options[:only]
       else
         excluded = BLACKLISTED_ATTRIBUTES.to_a
 
-        if options[:except]
-          excluded += extract_attributes(options[:except]).map(&:to_s)
+        if options[:except].any?
+          excluded += options[:except].map(&:to_s)
         end
 
         model_klass.attribute_names.reject { |name| excluded.include?(name) }
@@ -190,15 +194,6 @@ module Associates
 
         instance
       end
-    end
-
-    # Allow to accept single or multiple elements as arguments. Ensures a collection
-    # is always returned when there is one or more elements.
-    #
-    # @return [Nil, Array]
-    def extract_attributes(object)
-      return nil if object.blank?
-      object.is_a?(Enumerable) ? object : [object]
     end
   end
 end
