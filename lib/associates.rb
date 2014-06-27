@@ -23,7 +23,15 @@ module Associates
     self.associates = Array.new
   end
 
-  BLACKLISTED_ATTRIBUTES = ['id', 'updated_at', 'created_at', 'deleted_at']
+  # Which attributes are blacklisted:
+  mattr_accessor :blacklisted_attributes
+  @@blacklisted_attributes = ['id', 'updated_at', 'created_at', 'deleted_at']
+
+  # Used to configure associates from
+  # an initializer.
+  def self.setup
+    yield self
+  end
 
   Item = Struct.new(:name, :klass, :attribute_names, :dependent_names, :options)
 
@@ -129,7 +137,7 @@ module Associates
       if options[:only]
         extract_attributes(options[:only])
       else
-        excluded = BLACKLISTED_ATTRIBUTES.to_a
+        excluded = Associates.blacklisted_attributes.to_a
 
         if options[:except]
           excluded += extract_attributes(options[:except]).map(&:to_s)
