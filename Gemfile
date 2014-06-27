@@ -5,7 +5,7 @@ gem 'rake'
 
 group :development do
   gem 'pry'
-  gem 'debugger'
+  gem 'byebug'
   gem 'guard-rspec'
 end
 
