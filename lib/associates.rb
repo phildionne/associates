@@ -24,6 +24,10 @@ module Associates
   end
 
   BLACKLISTED_ATTRIBUTES = ['id', 'updated_at', 'created_at', 'deleted_at']
+  # Convenience method to allow configuration options to be set in a block
+  def self.configure(&block)
+    yield self
+  end
 
   Item = Struct.new(:name, :klass, :attribute_names, :dependent_names, :options)
 

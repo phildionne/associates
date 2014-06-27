@@ -6,6 +6,15 @@ describe Associates do
 
   let(:guest_order) { GuestOrder.new }
 
+  describe :ModuleMethods do
+
+    describe :configure do
+
+      it "yields the module" do
+        expect { |b| Associates.configure(&b) }.to yield_control
+      end
+    end
+  end
   describe :ClassMethods do
 
     describe :associate do
