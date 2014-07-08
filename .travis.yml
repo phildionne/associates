@@ -16,3 +16,4 @@ matrix:
   allow_failures:
     - rvm: 2.1.0
   - gemfiles/Gemfile.activerecord-4.0.x
+  - gemfiles/Gemfile.activerecord-4.1.x
