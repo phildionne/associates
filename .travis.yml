@@ -5,15 +5,13 @@ before_install:
   - rvm get head
 
 rvm:
+  - 2.1.2
+  - 2.1.1
   - 2.1.0
   - 2.0.0
   - 1.9.3
 
 gemfiles:
   - gemfiles/Gemfile.activerecord-3.2.x
-
-matrix:
-  allow_failures:
-    - rvm: 2.1.0
   - gemfiles/Gemfile.activerecord-4.0.x
   - gemfiles/Gemfile.activerecord-4.1.x
