@@ -9,6 +9,7 @@ Currently only compatible with ActiveRecord, support for other ORMs is on the li
 [![Coverage Status](https://coveralls.io/repos/phildionne/associates/badge.png)](https://coveralls.io/r/phildionne/associates)
 [![Dependency Status](https://gemnasium.com/phildionne/associates.png)](https://gemnasium.com/phildionne/associates)
 [![Build Status](https://travis-ci.org/phildionne/associates.png)](https://travis-ci.org/phildionne/associates)
+[![associates API Documentation](https://www.omniref.com/ruby/gems/associates.png)](https://www.omniref.com/ruby/gems/associates)
 
 # Usage
 
