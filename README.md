@@ -2,7 +2,9 @@
 
 Associate multiple models together and make them behave as one. Quacks like a single Model for the Views (validations, errors, form endpoints) and for the Controller (restful actions). Also a [great alternative](#an-alternative-to-the-current-nested-forms-solution) to `#accepts_nested_attributes_for`.
 
-Currently only compatible with ActiveRecord, support for other ORMs is on the list. Also, you might want to check out [apotonick/reform](https://github.com/apotonick/reform) to handle more complex situations.
+You might want to check out [apotonick/reform](https://github.com/apotonick/reform) to handle more complex situations.
+
+__Update__: The Rails core team is now working on [Activeform](https://github.com/rails/activeform) and I would strongly suggest to use it instead of this one.
 
 [![Gem Version](https://badge.fury.io/rb/associates.png)](http://badge.fury.io/rb/associates)
 [![Code Climate](https://codeclimate.com/github/phildionne/associates.png)](https://codeclimate.com/github/phildionne/associates)
@@ -221,10 +223,6 @@ end
 ## An alternative to the current nested forms solution
 
 I'm not a fan of Rails' current solution for handling multi-model forms using `#accepts_nested_attributes_for`. I feel like it breaks the Single Responsibility Principle by handling the logic on one of the models. Add just a bit of custom behavior and it usually leads to spaghetti logic in the controller and the tests. Using Associates to refactor nested forms logic into a multi-model object is a great fit.
-
-# TODO
-- [ ] Add a "#{model}_attributes" method to return an array of attributes included by the form object
-- [ ] Support other ORMs
 
 # Contributing
 
